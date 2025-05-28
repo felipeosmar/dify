@@ -1178,6 +1178,21 @@ services:
     volumes:
       - ./volumes/unstructured:/app/data
 
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "8000:8000" # Or another port of your choice, if needed
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1 # Specify the number of GPUs to use, or "all"
+              capabilities: [gpu]
+    volumes:
+          - ollama_data:/root/.ollama
+
 networks:
   # create a network between sandbox, api and ssrf_proxy, and can not access outside.
   ssrf_proxy_network:
@@ -1192,3 +1207,4 @@ networks:
 volumes:
   oradata:
   dify_es01_data:
+  ollama_data:
